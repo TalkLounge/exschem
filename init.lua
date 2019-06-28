@@ -1,6 +1,6 @@
 -- mods/exschem/init.lua
 -- =================
--- See README.txt for licensing and other information.
+-- See README.md for licensing and other information.
 
 exschem = {}
 local exschem_ids = {}
@@ -204,10 +204,6 @@ local function convert_time(time, str)
     return convert(time, "second")
   end
 end
-
-minetest.register_globalstep(function(dtime)
-		minetest.chat_send_all(dtime)
-end)
 
 local function chatcommand_callback(message, id, time, errcode, err)
 	local name
