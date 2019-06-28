@@ -1,7 +1,7 @@
-# exschem
+# EXSCHEM
 [Minetest](https://www.minetest.net/ "Link to minetest.net") mod adding lag free saving and loading of schematics
 
-## dependencies
+## Dependencies
 * [WorldEdit](https://forum.minetest.net/viewtopic.php?t=572 "Link to WorldEdit mod in the minetest forum") (Optional, [Newer than 15.June.2019](https://github.com/TalkLounge/exschem/blob/master/init.lua#L132 "Link to explanation"))
 
 ## Manual
