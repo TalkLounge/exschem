@@ -32,4 +32,4 @@ View [exschem](https://forum.minetest.net/viewtopic.php?f=9&t= "Link to exschem 
 
 ## ToDo
 * Add rotate support for whole schematic
-
+* Add relative pos with /here
