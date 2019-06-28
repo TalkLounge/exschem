@@ -5,11 +5,11 @@
 * [WorldEdit](https://forum.minetest.net/viewtopic.php?t=572 "Link to WorldEdit mod in the minetest forum") (Optional, [Newer than 15.June.2019](https://github.com/TalkLounge/exschem/blob/master/init.lua#L132 "Link to explanation"))
 
 ## Manual
-### For players
+#### For players
 Use chatcommand `/exschem` or `/help exschem` to see help. You need the privilege: privs  
 Or view on [YouTube](https://www.youtube.com/watch?v= "Link to YouTube video")
 
-### For programmers
+#### For programmers
 Use api functions [exschem.load](https://github.com/TalkLounge/exschem/blob/master/init.lua#L145 "Link to exschem.load function"), [exschem.save](https://github.com/TalkLounge/exschem/blob/master/init.lua#L78 "Link to exschem.save"), [exschem.kill](https://github.com/TalkLounge/exschem/blob/master/init.lua#L176 "Link to exschem.kill")
 
 ## Version
