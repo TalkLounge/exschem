@@ -201,7 +201,7 @@ local function convert_time(time, str)
   elseif time > minute then
     return convert(minute, "minute")
   else
-    return convert(time, "second")
+    return convert(1, "second")
   end
 end
 
