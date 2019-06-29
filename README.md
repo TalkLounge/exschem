@@ -1,4 +1,4 @@
-# EXSCHEM
+# ExSchem
 [Minetest](https://www.minetest.net/ "Link to minetest.net") mod adding lag free saving and loading of schematics by seperating them in little part schematics asynchronous
 
 ## Dependencies
