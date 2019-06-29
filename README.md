@@ -7,7 +7,7 @@
 ## Manual
 #### For players
 Use chatcommand `/exschem` or `/help exschem` to see help. You need the privilege: privs  
-Or view on [YouTube](https://www.youtube.com/watch?v= "Link to YouTube video")
+Or view on [YouTube](https://www.youtube.com/watch?v=2aXFCvwbCTE "Link to YouTube video")
 
 #### For programmers
 Use api functions [exschem.load](https://github.com/TalkLounge/exschem/blob/master/init.lua#L145 "Link to exschem.load function"), [exschem.save](https://github.com/TalkLounge/exschem/blob/master/init.lua#L78 "Link to exschem.save"), [exschem.kill](https://github.com/TalkLounge/exschem/blob/master/init.lua#L176 "Link to exschem.kill")
@@ -28,7 +28,7 @@ Minetest: [TalkLounge](https://forum.minetest.net/memberlist.php?mode=viewprofil
 See: [Other contributors](https://github.com/TalkLounge/exschem/graphs/contributors "Link to other contributors")
 
 ## Minetest forum post
-View [exschem](https://forum.minetest.net/viewtopic.php?f=9&t= "Link to exschem post in the minetest forum")
+View [exschem](https://forum.minetest.net/viewtopic.php?f=9&t=22794 "Link to exschem post in the minetest forum")
 
 ## ToDo
 * Add rotate support for whole schematic
