@@ -46,7 +46,7 @@ end
 
 local function exschem_save(pos1, pos2, use_worldedit, part, filepath, delay, id, iterator)
 	if not exschem_ids[id] then
-		return exschem_return(id, 0, "Action killed")
+		return exschem_return(id, 0, "Action was killed")
 	end
 	if not iterator then
 		iterator = posIterator(pos1, pos2, part)
@@ -63,7 +63,7 @@ local function exschem_save(pos1, pos2, use_worldedit, part, filepath, delay, id
 		local data = worldedit.serialize(pos, pos_)
 		local file, err = io.open(filepath .."/".. pos.x - pos1.x .."_".. pos.y - pos1.y .."_".. pos.z - pos1.z ..".we", "wb")
 		if err ~= nil then
-			return exschem_return(id, 2, "Writing to file failed")
+			return exschem_return(id, 2, "Write to file failed")
 		end
 		file:write(data)
 		file:close()
@@ -72,7 +72,7 @@ local function exschem_save(pos1, pos2, use_worldedit, part, filepath, delay, id
 		manip:read_from_map(pos, pos_)
 		minetest.create_schematic(pos, pos_, nil, filepath .."/".. pos.x - pos1.x .."_".. pos.y - pos1.y .."_".. pos.z - pos1.z, nil)
 	end
-	return minetest.after(delay, exschem_save, pos1, pos2, use_worldedit, part, filepath, delay, id, iterator)
+	minetest.after(delay, exschem_save, pos1, pos2, use_worldedit, part, filepath, delay, id, iterator)
 end
 
 -- Saves the current area defined by pos1 & pos2 asynchronously
@@ -89,7 +89,7 @@ end
 -- @return id: Integer. Needed to use exschem.kill & identify callback
 function exschem.save(pos1, pos2, use_worldedit, part, filepath, delay, callback)
 	if use_worldedit and (not worldedit or not worldedit.serialize) then
-		return nil, 3, "WorldEdit not installed"
+		return nil, 3, "Mod WorldEdit is not installed"
 	end
 	pos1, pos2 = sort_pos(pos1, pos2)
 	minetest.mkdir(minetest.get_worldpath() .."/schems")
@@ -98,7 +98,7 @@ function exschem.save(pos1, pos2, use_worldedit, part, filepath, delay, callback
 	local data = {maxpos = vector.subtract(pos2, pos1), part = part, use_worldedit = use_worldedit and true or nil}
 	local file, err = io.open(filepath .."/init.txt", "w")
 	if err ~= nil then
-		return nil, 2, "Writing to file failed"
+		return nil, 2, "Write to file failed"
 	end
 	file:write(minetest.serialize(data))
 	file:flush()
@@ -113,7 +113,7 @@ end
 
 local function exschem_load(pos1, maxpos, rotation, replacements, use_worldedit, part, filepath, delay, id, iterator, max)
 	if not exschem_ids[id] then
-		return exschem_return(id, 0, "Action killed")
+		return exschem_return(id, 0, "Action was killed")
 	end
 	if not iterator then
 		iterator = posIterator(pos1, vector.add(pos1, maxpos), part)
@@ -125,7 +125,7 @@ local function exschem_load(pos1, maxpos, rotation, replacements, use_worldedit,
 	if use_worldedit then
 		local file, err = io.open(filepath .."/".. pos.x - pos1.x .."_".. pos.y - pos1.y .."_".. pos.z - pos1.z ..".we", "rb")
 		if err ~= nil then
-			return exschem_return(id, 1, "Reading from file failed")
+			return exschem_return(id, 1, "Read from file failed")
 		end
 		local data = file:read("*a")
 		file:close()
@@ -138,12 +138,12 @@ local function exschem_load(pos1, maxpos, rotation, replacements, use_worldedit,
 		manip:read_from_map(pos, vector.add(pos, part))
 		minetest.place_schematic(pos, filepath .."/".. pos.x - pos1.x .."_".. pos.y - pos1.y .."_".. pos.z - pos1.z, rotation, replacements, true)
 	end
-	return minetest.after(delay, exschem_load, pos1, maxpos, rotation, replacements, use_worldedit, part, filepath, delay, id, iterator)
+	minetest.after(delay, exschem_load, pos1, maxpos, rotation, replacements, use_worldedit, part, filepath, delay, id, iterator)
 end
-
 
 -- Loads/Places the part schematics of filepath at pos1 asynchronously
 -- @param pos1: Vector. Position 1 where schematic should be placed
+-- @param pos_relative: Vector. Relative position for loading schematic in different direction, than always to positive direction. Recommended: pos1 (to ignore relative loading)
 -- @param rotation: Number, multiple of 90. Rotates the schematic. Only works when use_worldedit were false at exschem.save, because WorldEdit doesn't support rotate on place. Recommended: 0
 -- @param replacements: Table. Only works when use_worldedit were false at exschem.save, because WorldEdit doesn't support replace on place. Recommended: {}
 -- 				rotation & replacements can be seen here: https://github.com/minetest/minetest/blob/0.4.15/doc/lua_api.txt#L2529
@@ -154,22 +154,26 @@ end
 -- 								 @param errcode: Integer
 -- 								 @param error: String. Error message
 -- @return id: Integer. Needed to use exschem.kill & identify callback
-function exschem.load(pos1, rotation, replacements, filepath, delay, callback)
+function exschem.load(pos1, pos_relative, rotation, replacements, filepath, delay, callback)
 	filepath = minetest.get_worldpath() .."/schems/".. filepath
 	local file, err = io.open(filepath .."/init.txt", "r")
 	if err ~= nil then
-		return nil, 1, "Reading from file failed"
+		return nil, 1, "Read from file failed"
 	end
 	local data = minetest.deserialize(file:read("*a"))
 	file:close()
 	if data.use_worldedit and (not worldedit or not worldedit.deserialize) then
-		return nil, 3, "WorldEdit not installed"
+		return nil, 3, "Mod WorldEdit is not installed"
 	end
+	local pos = {}--Copy vector, otherwise it will change the external parameter variable
+	pos.x = (pos_relative.x < pos1.x) and (pos1.x - data.maxpos.x) or pos1.x
+	pos.y = (pos_relative.y < pos1.y) and (pos1.y - data.maxpos.y) or pos1.y
+	pos.z = (pos_relative.z < pos1.z) and (pos1.z - data.maxpos.z) or pos1.z
 	local id = #exschem_ids + 1
 	exschem_ids[id] = true
 	exschem_time[id] = os.time()
 	exschem_callback[id] = callback
-	minetest.after(0, exschem_load, pos1, data.maxpos, rotation, replacements, data.use_worldedit and true or false, data.part, filepath, delay, id)
+	minetest.after(0, exschem_load, pos, data.maxpos, rotation, replacements, data.use_worldedit and true or false, data.part, filepath, delay, id)
 	return id
 end
 
@@ -177,6 +181,54 @@ end
 -- @param id: Integer. Returned by exschem.save & exschem.load
 function exschem.kill(id)
 	exschem_ids[id] = false
+end
+
+local function mapgen_min_max(pos, chunksize)--Thanks to duane: https://forum.minetest.net/viewtopic.php?f=47&t=15272&start=575#p351592
+	local chunk_offset = math.floor(chunksize / 2) * 16
+	local csize = {x = chunksize * 16, y = chunksize * 16, z = chunksize * 16}
+	local chunk = vector.floor(vector.divide(vector.add(pos, chunk_offset), csize))
+	local minp = vector.add(vector.multiply(chunk, 80), -chunk_offset)
+	local maxp = vector.add(minp, (chunksize * 16) - 1)
+	return minp, maxp
+end
+
+local function exschem_emerge(pos1, pos2, chunksize, mapchunks, delay, id, iterator)
+	if not exschem_ids[id] then
+		return exschem_return(id, 0, "Action was killed")
+	end
+	if not iterator then
+		iterator = posIterator(pos1, pos2, chunksize)
+	end
+	for i = 1, mapchunks do
+		local pos = iterator()
+		if not pos then
+			return exschem_return(id)
+		end
+		minetest.emerge_area(pos, vector.add(pos, chunksize))
+	end
+	minetest.after(delay, exschem_emerge, pos1, pos2, chunksize, mapchunks, delay, id, iterator)
+end
+
+-- Emerges the current area defined by pos1 & pos2 asynchronously
+-- @param pos1: Vector. Position 1 of area
+-- @param pos2: Vector. Position 2 of area
+-- @param mapchunks: Number, greater than/equal 1. How much mapchunks should generated simultaneous. Recommended: 1
+-- @param delay: Float, greater than/equal 0. Time between emerging mapchunks. 0 = Every global step, because minetest.after uses minetest.register_globalstep internal. Recommended: 0
+-- @param (Optional) callback: Function. Called when an error occured or emerging is finished
+-- 								 @param id: Integer. Returned by exschem.emerge
+-- 								 @param errcode: Integer
+-- 								 @param error: String. Error message
+-- @return id: Integer. Needed to use exschem.kill & identify callback
+function exschem.emerge(pos1, pos2, mapchunks, delay, callback)
+	pos1, pos2 = sort_pos(pos1, pos2)
+	local chunksize = tonumber(type(minetest.settings) ~= "nil" and minetest.settings:get("chunksize") or minetest.setting_get("chunksize")) or 5
+	pos1 = mapgen_min_max(pos1, chunksize)
+	local id = #exschem_ids + 1
+	exschem_ids[id] = true
+	exschem_time[id] = os.time()
+	exschem_callback[id] = callback
+	minetest.after(0, exschem_emerge, pos1, pos2, (chunksize * 16) - 1, mapchunks, delay, id)
+	return id
 end
 
 local function convert_time(time, str)
@@ -232,9 +284,13 @@ local function chatcommand_callback_load(id, time, errcode, err)
 	chatcommand_callback("Loading", id, time, errcode, err)
 end
 
+local function chatcommand_callback_emerge(id, time, errcode, err)
+	chatcommand_callback("Emerging", id, time, errcode, err)
+end
+
 minetest.register_chatcommand("exschem", {
 	description = "Save and place lag free schematics",
-	params = "pos1 [<x> <y> <z>] | pos2 [<x> <y> <z>] | save <file> [<use_worldedit> [<part> [<delay>]]] | load <file> [<rotation> [<delay>]] | kill",
+	params = "pos1 [<x> <y> <z>] | pos2 [<x> <y> <z>] | save <file> [<use_worldedit> [<part> [<delay>]]] | load <file> [<rotation> [<delay>]] | emerge [<mapchunks> [<delay>]] | here [<x> <y> <z>] | kill",
 	privs = {server = true},
 	func = function(name, param)
 		local params = param:split(" ")
@@ -297,19 +353,48 @@ minetest.register_chatcommand("exschem", {
 				return false, "Delay must be a number greater than or equal 0. Default: 0"
 			end
 			local errcode, err
-			chatcommand_data[name].id, errcode, err = exschem.load(chatcommand_data[name].pos1, (params[2] and params[2] == "random") and "random" or (tonumber(params[2]) or 0), false, params[1], tonumber(params[3]) or 0, chatcommand_callback_load)
+			chatcommand_data[name].id, errcode, err = exschem.load(chatcommand_data[name].pos1, chatcommand_data[name].here or chatcommand_data[name].pos1, (params[2] and params[2] == "random") and "random" or (tonumber(params[2]) or 0), false, params[1], tonumber(params[3]) or 0, chatcommand_callback_load)
 			if chatcommand_data[name].id then
 				return true, "Started loading"
 			else
 				return false, "Loading error: ".. err
 			end
+		elseif option == "emerge" then
+			if chatcommand_data[name].id then
+				return false, "Action running. Please kill current action before starting new one. See /help exschem"
+			elseif not chatcommand_data[name].pos1 or not chatcommand_data[name].pos2 then
+				return false, "No positions set. See /help exschem"
+			elseif params[1] and (type(tonumber(params[1])) ~= "number" or tonumber(params[1]) < 1) then
+				return false, "Mapchunks must be a number greater than or equal 1. Defines how much mapchunks should be generated per step. Default: 1"
+			elseif params[2] and (type(tonumber(params[2])) ~= "number" or tonumber(params[2]) < 0) then
+				return false, "Delay must be a number greater than or equal 0. Default: 0"
+			end
+			local errcode, err
+			chatcommand_data[name].id, errcode, err = exschem.emerge(chatcommand_data[name].pos1, chatcommand_data[name].pos2, tonumber(params[1]) or 1, tonumber(params[2]) or 0, chatcommand_callback_emerge)
+			if chatcommand_data[name].id then
+				return true, "Started emerging"
+			else
+				return false, "Emerging error: ".. err
+			end
+		elseif option == "here" then
+			if not chatcommand_data[name].pos1 then
+				return false, "No position 1 set. This position depends on position 1. See /help exschem"
+			end
+			local found, _, x, y, z = param:find("^(-?%d+)[, ](-?%d+)[, ](-?%d+)$")
+			if not found then
+				local pos = vector.round(minetest.get_player_by_name(name):getpos())
+				chatcommand_data[name].here = pos
+			else
+				chatcommand_data[name].here = vector.round({x = tonumber(x), y = tonumber(y), z = tonumber(z)})
+			end
+			return true, "Schematic will be loaded to ".. ((chatcommand_data[name].here.x < chatcommand_data[name].pos1.x) and "-X" or "+X") ..", ".. ((chatcommand_data[name].here.y < chatcommand_data[name].pos1.y) and "-Y" or "+Y") ..", ".. ((chatcommand_data[name].here.z < chatcommand_data[name].pos1.z) and "-Z" or "+Z")
 		elseif option == "kill" then
 			if not chatcommand_data[name].id then
 				return false, "No action running"
 			end
 			exschem.kill(chatcommand_data[name].id)
 			chatcommand_data[name].id = nil
-			return true, "Action killed"
+			return true, "Action was killed"
 		end
 end})
 
