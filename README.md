@@ -10,28 +10,28 @@ Use chatcommand `/exschem` or `/help exschem` to see help. You need the privileg
 Or view [video](https://www.youtube.com/watch?v=2aXFCvwbCTE "Link to YouTube video")/[update video](https://www.youtube.com/watch?v=7ddLBhSGVSE "Link to YouTube update video") on YouTube
 
 **Minetest schematic: Saving**
-1. /exschem pos1 or /exschem pos1 <x> <y> <z>
-2. /exschem pos2 or /exschem pos2 <x> <y> <z>
-3. /exschem save <filename>
+1. /exschem pos1 or /exschem pos1 X Y Z
+2. /exschem pos2 or /exschem pos2 X Y Z
+3. /exschem save FILENAME
 
 **Minetest schematic: Loading**
-1. /exschem pos1 or /exschem pos1 <x> <y> <z>
+1. /exschem pos1 or /exschem pos1 X Y Z
 2. (Optional) /exschem here
-3. /exschem load <filename>
+3. /exschem load FILENAME
 
 **WorldEdit schematic: Saving**
-1. /exschem pos1 or /exschem pos1 <x> <y> <z>
-2. /exschem pos2 or /exschem pos2 <x> <y> <z>
-3. /exschem save <filename> true
+1. /exschem pos1 or /exschem pos1 X Y Z
+2. /exschem pos2 or /exschem pos2 X Y Z
+3. /exschem save FILENAME true
 
 **WorldEdit schematic: Loading**
-1. /exschem pos1 or /exschem pos1 <x> <y> <z>
+1. /exschem pos1 or /exschem pos1 X Y Z
 2. (Optional) /exschem here
-3. /exschem load <filename>
+3. /exschem load FILENAME
 
 **Emerge**
-1. /exschem pos1 or /exschem pos1 <x> <y> <z>
-2. /exschem pos2 or /exschem pos2 <x> <y> <z>
+1. /exschem pos1 or /exschem pos1 X Y Z
+2. /exschem pos2 or /exschem pos2 X Y Z
 3. /exschem emerge
 
 #### For programmers
