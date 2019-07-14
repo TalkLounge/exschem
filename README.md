@@ -1,5 +1,5 @@
 # ExSchem
-[Minetest](https://www.minetest.net/ "Link to minetest.net") mod adding lag free saving and loading of schematics by seperating them in little part schematics asynchronous
+[Minetest](https://www.minetest.net/ "Link to minetest.net") mod adding lag free saving, loading and emerging of schematics by seperating them in little part schematics asynchronous
 
 ## Dependencies
 * [WorldEdit](https://forum.minetest.net/viewtopic.php?t=572 "Link to WorldEdit mod in the minetest forum") (Optional, [Newer than 15.June.2019](https://github.com/TalkLounge/exschem/blob/master/init.lua#L132 "Link to explanation"))
