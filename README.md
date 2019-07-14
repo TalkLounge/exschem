@@ -35,7 +35,7 @@ Or view [video](https://www.youtube.com/watch?v=2aXFCvwbCTE "Link to YouTube vid
 3. /exschem emerge
 
 #### For programmers
-Use api functions [exschem.load](https://github.com/TalkLounge/exschem/blob/master/init.lua#L145 "Link to exschem.load function"), [exschem.save](https://github.com/TalkLounge/exschem/blob/master/init.lua#L78 "Link to exschem.save"), [exschem.kill](https://github.com/TalkLounge/exschem/blob/master/init.lua#L176 "Link to exschem.kill")
+Use api functions [exschem.load](https://github.com/TalkLounge/exschem/blob/master/init.lua#L144 "Link to exschem.load function"), [exschem.save](https://github.com/TalkLounge/exschem/blob/master/init.lua#L78 "Link to exschem.save"), [exschem.kill](https://github.com/TalkLounge/exschem/blob/master/init.lua#L182 "Link to exschem.kill"), [exschem.emerge](https://github.com/TalkLounge/exschem/blob/master/init.lua#L212 "Link to exschem.emerge")
 
 ## Version
 2.0
