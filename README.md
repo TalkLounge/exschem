@@ -7,13 +7,38 @@
 ## Manual
 #### For players
 Use chatcommand `/exschem` or `/help exschem` to see help. You need the privilege: privs  
-Or view on [YouTube](https://www.youtube.com/watch?v=2aXFCvwbCTE "Link to YouTube video")
+Or view [video](https://www.youtube.com/watch?v=2aXFCvwbCTE "Link to YouTube video")/[update video](https://www.youtube.com/watch?v=7ddLBhSGVSE "Link to YouTube update video") on YouTube
+
+**Minetest schematic: Saving**
+1. /exschem pos1 or /exschem pos1 <x> <y> <z>
+2. /exschem pos2 or /exschem pos2 <x> <y> <z>
+3. /exschem save <filename>
+
+**Minetest schematic: Loading**
+1. /exschem pos1 or /exschem pos1 <x> <y> <z>
+2. (Optional) /exschem here
+3. /exschem load <filename>
+
+**WorldEdit schematic: Saving**
+1. /exschem pos1 or /exschem pos1 <x> <y> <z>
+2. /exschem pos2 or /exschem pos2 <x> <y> <z>
+3. /exschem save <filename> true
+
+**WorldEdit schematic: Loading**
+1. /exschem pos1 or /exschem pos1 <x> <y> <z>
+2. (Optional) /exschem here
+3. /exschem load <filename>
+
+**Emerge**
+1. /exschem pos1 or /exschem pos1 <x> <y> <z>
+2. /exschem pos2 or /exschem pos2 <x> <y> <z>
+3. /exschem emerge
 
 #### For programmers
 Use api functions [exschem.load](https://github.com/TalkLounge/exschem/blob/master/init.lua#L145 "Link to exschem.load function"), [exschem.save](https://github.com/TalkLounge/exschem/blob/master/init.lua#L78 "Link to exschem.save"), [exschem.kill](https://github.com/TalkLounge/exschem/blob/master/init.lua#L176 "Link to exschem.kill")
 
 ## Version
-1.0
+2.0
 
 ## License
 CC BY-NC 3.0 | See [LICENSE](https://github.com/TalkLounge/exschem/blob/master/LICENSE.md "Link to LICENSE.md")
